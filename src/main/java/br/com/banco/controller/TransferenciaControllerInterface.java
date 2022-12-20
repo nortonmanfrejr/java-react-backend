@@ -14,8 +14,6 @@ public interface TransferenciaControllerInterface {
     List<Transferencia> buscar(Integer conta);
     List<Transferencia> buscar(String operador);
     List<Transferencia> buscar(String initial, String end);
-    List<Transferencia> busca(String operador,String initial,String end);
-    List<Transferencia> buscar(@PathVariable(value = "operador") String operador,
-                               @PathVariable(value = "initial") String initial,
-                               @PathVariable(value = "end") String end);
+    List<Transferencia> buscar(String operador,String initial,String end);
+
 }

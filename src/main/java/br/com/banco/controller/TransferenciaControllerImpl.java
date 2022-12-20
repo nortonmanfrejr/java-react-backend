@@ -30,7 +30,7 @@ public class TransferenciaControllerImpl implements TransferenciaControllerInter
 
     /**
      * Busca todas as transferencias realizados por uma conta.
-     * @param conta numero
+     * @param conta a ser buscada
      * @return lista de transações a partir do numero da conta
      * */
     @GetMapping(value = "/search==cc{conta}")
@@ -39,6 +39,12 @@ public class TransferenciaControllerImpl implements TransferenciaControllerInter
         return repository.findByConta(conta);
     }
 
+    /**
+     * Busca todas as transferencias realizados por um operador, caso seja passado o valor null
+     * recebera todos os operadores null
+     * @param operador a ser buscado
+     * @return lista de transações a partir do nome do operador
+     * */
     @GetMapping(value = "/search==oc{operador}")
     @Override
     public List<Transferencia> buscar(@PathVariable String operador) {
@@ -47,18 +53,19 @@ public class TransferenciaControllerImpl implements TransferenciaControllerInter
         return repository.findByOperador(operador);
     }
 
+    /**
+     * Busca todas as transferencias realizados dentro de um periodo de tempo.
+     * @param initial data inicial
+     * @param end data final
+     * @return lista de transações que foram realizadas entre de initial e end
+     * */
     @GetMapping(value = "/search==init{initial}&end{end}")
     @Override
     public List<Transferencia> buscar(@PathVariable(value = "initial") String initial,@PathVariable(value = "end") String end) {
         return repository.findByDateTime(assistant.dateTimeConverter(initial),assistant.dateTimeConverter(end));
     }
 
-    @Override
-    public List<Transferencia> busca(String operador, String initial, String end) {
-        return null;
-    }
-
-    @GetMapping(value = "/search==oc{operador}&init{initial}&end{end}")
+    @GetMapping(value = "/search=={operador}&init{initial}&end{end}")
     @Override
     public List<Transferencia> buscar(@PathVariable(value = "operador") String operador,
                                       @PathVariable(value = "initial") String initial,
