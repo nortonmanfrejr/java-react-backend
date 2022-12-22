@@ -1,6 +1,7 @@
 package br.com.banco.repository;
 
 import br.com.banco.model.Transferencia;
+import com.fasterxml.jackson.annotation.JsonKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
