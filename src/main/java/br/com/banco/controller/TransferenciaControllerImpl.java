@@ -1,84 +1,48 @@
 package br.com.banco.controller;
 
 import br.com.banco.model.Transferencia;
-import br.com.banco.repository.TransferenciaRepository;
+import br.com.banco.service.TransferenciaServiceInterface;
+
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("/transferencia")
-public class TransferenciaControllerImpl implements TransferenciaControllerInterface {
+import static java.util.stream.Collectors.toList;
+
+
+@Service
+@AllArgsConstructor
+public class TransferenciaControllerImpl {
 
     @Autowired
-    private TransferenciaRepository repository;
-    private final ControllerAssistant assistant = new ControllerAssistant();
-    /**
-     * Busca todas as transferencias realizadas pela API que estejam listadas na base de dados
-     * @return lista com todas as transferencias
-     * */
-    @CrossOrigin(origins = "http://localhost:3000") // CrossOrigin da aplicação
-    @GetMapping
-    @Override
+    private TransferenciaServiceInterface anInterface; // Pegando interface de serviço
+
     public List<Transferencia> listar() {
-        return repository.findAll();
+        return anInterface.listar();
     }
 
+    public List<Transferencia> filtered(LocalDateTime init,LocalDateTime end, String nomeOperador) {
+        List<Transferencia> transferencias = anInterface.listar();
 
-    /**
-     * Busca todas as transferencias realizados por uma conta.
-     * @param conta a ser buscada
-     * @return lista de transações a partir do numero da conta
-     * */
-    @CrossOrigin(origins = "http://localhost:3000") // CrossOrigin da aplicação
-    @GetMapping(value = "/search==cc{conta}")
-    @Override
-    public List<Transferencia> buscar(@PathVariable Integer conta) {
-        return repository.findByConta(conta);
-    }
+        if(!nomeOperador.isEmpty()){
+            transferencias = transferencias.stream().
+                    filter(transferecia -> transferecia.getOperador() != null
+                            &&
+                            transferecia.getOperador().equals(nomeOperador)).collect(toList());
+        }
 
-    /**
-     * Busca todas as transferencias realizados por um operador, caso seja passado o valor null
-     * recebera todos os operadores null
-     * @param operador a ser buscado
-     * @return lista de transações a partir do nome do operador
-     * */
-    @CrossOrigin(origins = "http://localhost:3000") // CrossOrigin da aplicação
-    @GetMapping(value = "/search==oc{operador}")
-    @Override
-    public List<Transferencia> buscar(@PathVariable String operador) {
-        if (operador.equals("null")) operador = null; // caso seja digitado null como operador de busca
+//        if(init != null && end != null){
+//            transferencias = transferencias.stream().filter(
+//                    transferecia -> transferecia.getOperationDate().(init)
+//                            && transferecia.getOperationDate().isBefore(end)
+//                            || transferecia.getOperationDate().isEqual(init)
+//                            || transferecia.getOperationDate().isEqual(end) ).toList();
+//        }
 
-        return repository.findByOperador(operador);
-    }
-
-    /**
-     * Busca todas as transferencias realizados dentro de um periodo de tempo.
-     * @param initial data inicial
-     * @param end data final
-     * @return lista de transações que foram realizadas entre de initial e end
-     * */
-    @CrossOrigin(origins = "http://localhost:3000") // CrossOrigin da aplicação
-    @GetMapping(value = "/search==init{initial}&end{end}")
-    @Override
-    public List<Transferencia> buscar(@PathVariable(value = "initial") String initial,@PathVariable(value = "end") String end) {
-        return repository.findByDateTime(assistant.dateTimeConverter(initial),assistant.dateTimeConverter(end));
-    }
-
-    /**
-     * Busca todas as transferencias que um usuario realizou dentro de um periodo de tempo.
-     * @param operador nome
-     * @param initial data inicial
-     * @param end data final
-     * @return lista de transações que foram realizadas entre de initial e end
-     * */
-    @CrossOrigin(origins = "http://localhost:3000") // CrossOrigin da aplicação
-    @GetMapping(value = "/search=={operador}&init{initial}&end{end}")
-    @Override
-    public List<Transferencia> buscar(@PathVariable(value = "operador") String operador,
-                                      @PathVariable(value = "initial") String initial,
-                                      @PathVariable(value = "end") String end) {
-        return repository.findByOperadorDateTime(operador,assistant.dateTimeConverter(initial),assistant.dateTimeConverter(end));
+        return transferencias;
     }
 }

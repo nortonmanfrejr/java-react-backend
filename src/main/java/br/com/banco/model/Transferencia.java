@@ -12,7 +12,7 @@ public class Transferencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "data_transferencia")
     @Temporal(TemporalType.TIMESTAMP)
     private Date operationDate;

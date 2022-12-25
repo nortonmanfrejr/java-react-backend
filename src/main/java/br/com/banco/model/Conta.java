@@ -12,7 +12,7 @@ public class Conta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_conta;
+    private Long id_conta;
     private String nome_responsavel;
 
 }

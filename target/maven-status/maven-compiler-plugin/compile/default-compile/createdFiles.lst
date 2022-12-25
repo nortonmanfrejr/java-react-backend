@@ -1,8 +1,0 @@
-br\com\banco\repository\ContaRepository.class
-br\com\banco\controller\ControllerAssistant.class
-br\com\banco\model\Transferencia.class
-br\com\banco\controller\TransferenciaControllerImpl.class
-br\com\banco\repository\TransferenciaRepository.class
-br\com\banco\BancoApplication.class
-br\com\banco\controller\TransferenciaControllerInterface.class
-br\com\banco\model\Conta.class
