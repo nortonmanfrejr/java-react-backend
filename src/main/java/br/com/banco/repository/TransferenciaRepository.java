@@ -1,7 +1,6 @@
 package br.com.banco.repository;
 
 import br.com.banco.model.Transferencia;
-import com.fasterxml.jackson.annotation.JsonKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -22,5 +21,5 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, Lo
     @Query(value = "SELECT * FROM transferencia " +
             "WHERE nome_operador_transacao = :operador AND data_transferencia BETWEEN :initial AND :end",
             nativeQuery = true)
-    List<Transferencia> findByOperadorDateTime(String operador,LocalDateTime initial,LocalDateTime end);
+    List<Transferencia> findByOperadorDateTime(String operador, LocalDateTime initial, LocalDateTime end);
 }

@@ -1,13 +1,11 @@
 package br.com.banco.service;
 
-import br.com.banco.controller.ControllerAssistant;
 import br.com.banco.model.Transferencia;
 import br.com.banco.repository.TransferenciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,7 +13,6 @@ public class TransferenciaServiceImpl implements TransferenciaServiceInterface{
 
     @Autowired
     private TransferenciaRepository repository;
-    private final ControllerAssistant assistant = new ControllerAssistant();
 
     /**
      * Busca todas as transferencias realizadas pela API que estejam listadas na base de dados
@@ -55,8 +52,8 @@ public class TransferenciaServiceImpl implements TransferenciaServiceInterface{
      * @return lista de transações que foram realizadas entre de initial e end
      * */
     @Override
-    public List<Transferencia> periodo(String initial,String end) {
-        return repository.findByDateTime(assistant.dateTimeConverter(initial),assistant.dateTimeConverter(end));
+    public List<Transferencia> periodo(LocalDateTime initial, LocalDateTime end) {
+        return repository.findByDateTime(initial,end);
     }
 
     /**
@@ -68,9 +65,9 @@ public class TransferenciaServiceImpl implements TransferenciaServiceInterface{
      * */
     @Override
     public List<Transferencia> nomeOperadorAndPeriodo(String operador,
-                                      String initial,
-                                      String end) {
-        return repository.findByOperadorDateTime(operador,assistant.dateTimeConverter(initial),assistant.dateTimeConverter(end));
+                                                      LocalDateTime initial,
+                                                      LocalDateTime end) {
+        return repository.findByOperadorDateTime(operador,initial,end);
     }
 
 

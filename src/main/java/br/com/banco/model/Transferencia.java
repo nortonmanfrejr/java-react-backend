@@ -3,7 +3,7 @@ package br.com.banco.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -14,8 +14,7 @@ public class Transferencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "data_transferencia")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date operationDate;
+    private LocalDateTime operationDate;
     private Double valor;
     private String tipo;
     @Column(name = "nome_operador_transacao")

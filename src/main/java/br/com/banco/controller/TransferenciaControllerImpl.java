@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -25,7 +24,7 @@ public class TransferenciaControllerImpl {
         return anInterface.listar();
     }
 
-    public List<Transferencia> filtered(LocalDateTime init,LocalDateTime end, String nomeOperador) {
+    public List<Transferencia> filtered(LocalDateTime init, LocalDateTime end, String nomeOperador) {
         List<Transferencia> transferencias = anInterface.listar();
 
         if(!nomeOperador.isEmpty()){
@@ -35,13 +34,14 @@ public class TransferenciaControllerImpl {
                             transferecia.getOperador().equals(nomeOperador)).collect(toList());
         }
 
-//        if(init != null && end != null){
-//            transferencias = transferencias.stream().filter(
-//                    transferecia -> transferecia.getOperationDate().(init)
-//                            && transferecia.getOperationDate().isBefore(end)
-//                            || transferecia.getOperationDate().isEqual(init)
-//                            || transferecia.getOperationDate().isEqual(end) ).toList();
-//        }
+        if(init != null && end != null){
+            transferencias = transferencias.stream().
+                    filter(transferencia ->
+                            transferencia.getOperationDate().isAfter(init)
+                                    && transferencia.getOperationDate().isBefore(end)
+                            || transferencia.getOperationDate().equals(init)
+                            || transferencia.getOperationDate().equals(end)).collect(toList());
+        }
 
         return transferencias;
     }

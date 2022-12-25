@@ -10,6 +10,7 @@ public class ControllerAssistant {
      * @return LDT apartir de uma string
      * */
     public LocalDateTime dateTimeConverter(String string) {
-        return LocalDateTime.parse(string);
+        return LocalDateTime.
+                parse(string);
     }
 }
